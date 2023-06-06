@@ -2,10 +2,12 @@
 #
 # Requires eyed3 and plexapi libraries, written & tested in python 3.9
 
-from plexapi.myplex import MyPlexAccount
+from plexapi.server import PlexServer
 import eyed3
 
-LIB = 'Syno'
+baseurl = 'http://plexserverurl:32400'
+token = 'plextoken'
+
 # Counters
 insync = 0
 justsynced = 0
@@ -20,8 +22,8 @@ def loadFile(str):
     return audiofile
 
 def makeRemoteString(str):
-    locationPrepend = r'X:/'
-    locationRemove = r'/volume2/music'
+    locationPrepend = r''
+    locationRemove = r''
     tmp = str.replace(locationRemove, locationPrepend)
     return tmp
 
@@ -40,8 +42,7 @@ def convertRatingsToMusicBee(n):
 
 print("start")
 
-account = MyPlexAccount('', '')
-plex = account.resource(LIB).connect()
+plex = PlexServer(baseurl, token)
 print('connected')
 for album in plex.library.section('Music').albums():
     print('#################Checking out album: ' + str(album))
